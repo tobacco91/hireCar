@@ -2,24 +2,41 @@ import React from 'react';
 import Home from '../pages/Home';
 import Mine from '../pages/Mine';
 import Release from '../pages/Release';
+import List from '../pages/List';
+import ListItem from '../pages/ListItem';
+
 import AppBottomTabNavigator from './BottomTabNavigator';
 import { createStackNavigator } from 'react-navigation';
+
 const stackNavigator = createStackNavigator({
     Home: {
-        screen: AppBottomTabNavigator
+        screen: AppBottomTabNavigator,
+        // navigationOptions: {
+        //     header:null,
+        // }
     },
     Release: {
         screen: Release,
-        // navigationOptions: {
-        //     title: '个人信息'
-        // }
+       
     },
     Mine: {
         screen: Mine,
         navigationOptions: {
-            title: '个人信息'
+            title: 'lalalal'
         }
     },
+    List: {
+        screen: List,
+        navigationOptions: {
+            title: '搜索'
+        }
+    },
+    ListItem: {
+        screen: ListItem,
+        navigationOptions: {
+            title: '详情'
+        }
+    }
 },{
     initialRouteName: 'Home',
 })
