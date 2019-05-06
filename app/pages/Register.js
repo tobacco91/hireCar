@@ -1,26 +1,26 @@
-import React, { Component } from 'react';
-import {
-  StyleSheet, Text, View, TextInput, Button, ScrollView, PixelRatio,
+import React, {Component} from 'react';
+import {TextInput, StyleSheet,Text, Button, View,PixelRatio,
   TouchableOpacity,
-  Image,
-} from 'react-native';
+  Image,} from 'react-native';
 import ImagePicker from 'react-native-image-picker';
 
-
-export default class Release extends Component {
+export default class Register extends Component {
   constructor(props) {
     super(props);
     this.state = {
-      textTitle: '',
-      price: 0,
-      phone: 0,
-      description: '',
+      user: '',
+      password: '', 
+      surePassword: '',
+      name: '',
       avatarSource: null,
-     }
-     
+     };
   }
 
-    //选择图片
+  login = () => {
+    const { navigation } = this.props;
+    navigation.navigate('Home');
+  }
+
   selectPhotoTapped() {
     const options = {
         title: '选择图片', 
@@ -70,92 +70,78 @@ export default class Release extends Component {
     });
   }
 
-
-
-
-
-
   render() {
-    return (
+    const { navigation } = this.props;
+    return(
       <View style={styles.container}>
-        <ScrollView>
-          <TextInput
-            style={styles.subone}
-            placeholder="标题"
-            onChangeText={textTitle => this.setState({ textTitle })}
-          />
-          <TextInput
-            style={styles.subone}
-            placeholder="价格"
-            onChangeText={price => this.setState({ price })}
-          />
-          <TextInput
-            style={styles.subone}
-            placeholder="手机号"
-            onChangeText={phone => this.setState({ phone })}
-          />
-          <TextInput
-            style={styles.subone}
-            placeholder="地址（精确到街道）"
-            onChangeText={address => this.setState({ address })}
-          />
-          <TextInput
-            style={styles.subtwo}
-            placeholder="描述"
-            onChangeText={description => this.setState({ description })}
-          />
+      
+        <TextInput
+          style={styles.subone}
+          placeholder="用户名(请使用邮箱)"
+          onChangeText={user => this.setState({ user })}
+        />
 
-          <TouchableOpacity onPress={this.selectPhotoTapped.bind(this)}>
-            <View style={[styles.avatar, styles.avatarContainer, {marginBottom: 30}]}>
-                { this.state.avatarSource === null ? <Text>选择照片</Text> :
-                    <Image style={styles.avatar} source={this.state.avatarSource} />
-                }
-            </View>
-          </TouchableOpacity>
-
-        </ScrollView>
-        <View style={styles.btn}>
-          <Button title="确认发布" />
-        </View>
+        <TextInput
+          style={styles.subone}
+          placeholder="昵称"
+          onChangeText={name => this.setState({ name })}
+        />
+        <TextInput
+          style={styles.subone}
+          placeholder="密码"
+          onChangeText={password => this.setState({ password })}
+        />
+        <TextInput
+          style={styles.subone}
+          placeholder="再次输入密码"
+          onChangeText={surePassword => this.setState({ surePassword })}
+        />
+        <TouchableOpacity onPress={this.selectPhotoTapped.bind(this)}>
+          <View style={[styles.avatar, styles.avatarContainer, {marginBottom: 30}]}>
+              { this.state.avatarSource === null ? <Text>上传头像</Text> :
+                  <Image style={styles.avatar} source={this.state.avatarSource} />
+              }
+          </View>
+        </TouchableOpacity>
+      <View style={styles.register}>
+        <Button title="注册" 
+          onPress={() => {alert('注册成功，请登录');navigation.navigate('Login');}}
+        />
       </View>
-    
+    </View>
+  
     );
   }
 }
 
-
 const styles = StyleSheet.create({
   container: {
     flex: 1,
-
-    backgroundColor: '#F7F7F7',
     paddingHorizontal: 20,
+    paddingTop: 100,
+    alignItems: 'center',
   },
   subone: {
+    width: 300,
     height: 40,
     marginTop: 20,
-    backgroundColor: '#fff',
+    backgroundColor: '#F7F7F7',
   },
-  subtwo: {
-    height: 100,
-    marginTop: 20,
-    backgroundColor: '#fff',
+  register: {
+    marginTop:20,
+    width: 200,
+    backgroundColor: '#F5D33D',
   },
-  btn: {
-    backgroundColor: '#EB235C',
-  },
-
   avatarContainer: {
     marginTop: 20,
     borderColor: '#9B9B9B',
     borderWidth: 1 / PixelRatio.get(),
     justifyContent: 'center',
     alignItems: 'center'
-},
-avatar: {
-   
-    width: 300,
-    height: 300
-}
+  },
+  avatar: {
+      width: 100,
+      height: 100
+  }
 
 });

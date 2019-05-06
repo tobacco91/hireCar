@@ -13,7 +13,7 @@ export default class ListItem extends Component {
   }
 
   componentDidMount() {
-
+    
   }
 
  collect = () => {

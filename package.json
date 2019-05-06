@@ -11,16 +11,16 @@
     "react": "16.8.3",
     "react-native": "0.59.5",
     "react-native-gesture-handler": "^1.1.0",
+    "react-native-heic-converter": "^1.2.0",
+    "react-native-image-picker": "^0.28.1",
     "react-native-vector-icons": "^6.4.2",
     "react-navigation": "^3.9.1"
   },
   "devDependencies": {
     "@babel/core": "^7.4.4",
     "@babel/runtime": "^7.4.4",
+    "babel-eslint": "^9.0.0",
     "babel-jest": "^24.7.1",
-    "jest": "^24.7.1",
-    "metro-react-native-babel-preset": "^0.53.1",
-    "react-test-renderer": "16.8.3",
     "eslint": "^5.9.0",
     "eslint-config-airbnb": "^17.1.0",
     "eslint-config-standard": "^12.0.0",
@@ -29,7 +29,9 @@
     "eslint-plugin-jsx-a11y": "^6.1.2",
     "eslint-plugin-react": "^7.11.1",
     "eslint-plugin-standard": "^4.0.0",
-    "babel-eslint": "^9.0.0"
+    "jest": "^24.7.1",
+    "metro-react-native-babel-preset": "^0.53.1",
+    "react-test-renderer": "16.8.3"
   },
   "jest": {
     "preset": "react-native"

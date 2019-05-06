@@ -1,11 +1,11 @@
 import React, { Component } from 'react';
 import { SearchBar, WhiteSpace } from '@ant-design/react-native';
 import {
-  StyleSheet, Text, View, Button,
+   StyleSheet, View,
 } from 'react-native';
 import FlatListComponent from '../components/FlatListComponent';
 
-export default class Home extends Component {
+export default class List extends Component {
   constructor(props) {
     super(props);
     this.state = {
@@ -18,7 +18,7 @@ export default class Home extends Component {
     this.setState({
       data: [
         { key: 'Devin', url: '' },
-        { key: 'JacksonJacksonJacksonJacksonJacksonJacksonJacksonJacksonJacksonJacksonJacksonJacksonJacksonJackson' },
+        { key: 'Jackson' },
         { key: 'James' },
         { key: 'Joel' },
         { key: 'John' },
@@ -33,22 +33,10 @@ export default class Home extends Component {
     });
   }
 
-	submit = (value) => {
-    const { navigation } = this.props;
-    navigation.navigate('List');
-	}
 
 	render() {
-	  const { navigation } = this.props;
 	  return (
-	    <View style={styles.container}>
-	      <SearchBar
-    placeholder="Search"
-    cancelText=" "
-    onSubmit={this.submit}
-  />
-    <WhiteSpace />
-    <Text style={styles.title}>为您推荐</Text>
+	  <View style={styles.container}>
 	      <FlatListComponent
 	        data={this.state.data}
     navigation={this.props.navigation}
@@ -62,19 +50,5 @@ const styles = StyleSheet.create({
   container: {
 	  flex: 1,
   },
-  title: {
-    margin: 10,
-    fontSize: 25,
-  },
 
-  welcome: {
-	  fontSize: 20,
-	  textAlign: 'center',
-	  margin: 10,
-  },
-  instructions: {
-	  textAlign: 'center',
-	  color: '#333333',
-	  marginBottom: 5,
-  },
 });

@@ -31,7 +31,7 @@ const styles = StyleSheet.create({
 	
 	flatList: {
 		marginHorizontal: 10,
-		// backgroundColor: '#F5FCFF',
+		
 	},
 	flatListItem: {
 		justifyContent: 'space-around',
@@ -41,7 +41,7 @@ const styles = StyleSheet.create({
 	flatListItemText: {
 		height: 20,
 		fontSize: 16,
-		backgroundColor: 'red'
+
 	},
 	flatListItemImage: {
 		width: 170,
