@@ -3,6 +3,7 @@ import React, { Component } from 'react';
 import {
   Image, StyleSheet, Text, View, Button, ScrollView,
 } from 'react-native';
+import { TextInput } from 'react-native-gesture-handler';
 
 export default class ListItem extends Component {
   constructor(props) {
@@ -13,15 +14,15 @@ export default class ListItem extends Component {
   }
 
   componentDidMount() {
-    
+
   }
 
  collect = () => {
-  alert('收藏成功');
+   alert('收藏成功');
  }
 
  buy = () => {
-  alert('购买成功');
+   alert('购买成功');
  }
 
  render() {
@@ -37,7 +38,17 @@ export default class ListItem extends Component {
              <Text style={styles.detailsSuboneName}>昵称</Text>
            </View>
            <Text style={styles.detailsTitle}>本车出租</Text>
-           <Text style={styles.detailsPrice}>价格：$23</Text>
+           <View style={styles.detailsPrice}>
+             <Text style={{ fontSize: 16 }}>价格：</Text>
+             <TextInput style={styles.detailsPriceInput}>$23</TextInput>
+             <View style={styles.detailsPriceButton}>
+               <Button
+                 color="#fff"
+                 title="价格完整性验证"
+                 onPress={() => alert('价格未被篡改')}
+               />
+             </View>
+           </View>
            <Text style={styles.detailsPrice}>手机号：18875140931</Text>
            <Text style={styles.detailsPrice}>地址：浙江绍兴柯桥</Text>
            <Text
@@ -109,8 +120,20 @@ const styles = StyleSheet.create({
     fontWeight: 'bold',
   },
   detailsPrice: {
+    flexDirection: 'row',
+    alignItems: 'center',
     marginTop: 20,
     fontSize: 16,
+
+  },
+  detailsPriceInput: {
+    backgroundColor: '#f7f7f7',
+    width: 80,
+    height: 40,
+  },
+  detailsPriceButton: {
+    marginLeft: 40,
+    backgroundColor: '#F5D33D',
 
   },
   detailsImage: {
