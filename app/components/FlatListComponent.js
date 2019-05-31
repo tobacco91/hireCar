@@ -3,7 +3,7 @@ import {
   FlatList, TouchableHighlight, Image, StyleSheet, Text, View,
 } from 'react-native';
 
-const CAR_IMAGE_DEFAULT_URL = 'http://172.20.10.10:8000';
+const CAR_IMAGE_DEFAULT_URL = 'http://192.168.0.103:8000';
 export default class FlatListComponent extends Component {
   render() {
     const { navigation } = this.props;

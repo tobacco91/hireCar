@@ -1,12 +1,12 @@
 import axios from 'axios';
-import _ from 'lodash'
+import _ from 'lodash';
 import {
   Alert,
- } from 'react-native';
+} from 'react-native';
 // if (__DEV__) {
 //   GLOBAL.XMLHttpRequest = GLOBAL.originalXMLHttpRequest || GLOBAL.XMLHttpRequest
 // }
-axios.defaults.baseURL = 'http://y53ujj.natappfree.cc/';
+axios.defaults.baseURL = 'http://ru2mqe.natappfree.cc/';
 
 const handleReponse = (response) => {
   const res = response.data;
@@ -16,16 +16,16 @@ const handleReponse = (response) => {
     return res;
   }
   const msg = res.msg || '';
-  Alert.alert('提示',msg);
+  Alert.alert('提示', msg);
   return Promise.reject(new Error(msg));
 };
 
 const handleError = (error) => {
   const response = error.response || { status: 200 };
   if (response.status === 401) {
-    Alert.alert('提示','登录校验失败, 请刷新页面');
+    Alert.alert('提示', '登录校验失败, 请刷新页面');
   } else if (response.status !== 200) {
-    Alert.alert('提示',`网络错误HTTP code:${response.status}`);
+    Alert.alert('提示', `网络错误HTTP code:${response.status}`);
   }
   return Promise.reject(error);
 };
