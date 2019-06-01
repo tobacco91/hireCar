@@ -3,10 +3,8 @@ import _ from 'lodash';
 import {
   Alert,
 } from 'react-native';
-// if (__DEV__) {
-//   GLOBAL.XMLHttpRequest = GLOBAL.originalXMLHttpRequest || GLOBAL.XMLHttpRequest
-// }
-axios.defaults.baseURL = 'http://ru2mqe.natappfree.cc/';
+
+axios.defaults.baseURL = 'http://9khgne.natappfree.cc/';
 
 const handleReponse = (response) => {
   const res = response.data;

@@ -1,20 +1,38 @@
 import React, { Component } from 'react';
 import {
-  Image, StyleSheet, Text, View,
+  Image, StyleSheet, Text, View, AsyncStorage,Button
 } from 'react-native';
 import Ionicons from 'react-native-vector-icons/Ionicons';
+import _ from 'lodash';
 
+const CAR_IMAGE_DEFAULT_URL = 'http://192.168.0.103:8000';
 export default class Mine extends Component {
+  constructor(props) {
+    super(props);
+    this.state = {
+      data: {},
+		 };
+  }
+
+  componentDidMount() {
+    AsyncStorage.getItem('user')
+      .then((value) => {
+        const user = JSON.parse(value);
+        this.setState({ data: user });
+      });
+  }
+
   render() {
     const { navigation } = this.props;
+    const { data } = this.state;
     return (
       <View style={styles.container}>
         <View style={styles.containerSubone}>
           <Image
-            source={{ uri: 'https://note.youdao.com/yws/api/personal/file/WEB4baf465904166e49f2da2ee8c13bf3d3?method=download&shareKey=1a99d4962e7d6bcf0a337a88a06df171' }}
+            source={{ uri: CAR_IMAGE_DEFAULT_URL + _.get(data, 'avatarPath') }}
             style={styles.detailsSuboneAvatar}
           />
-          <Text style={styles.detailsSuboneName}>昵称</Text>
+          <Text style={styles.detailsSuboneName}>{_.get(data, 'name')}</Text>
         </View>
         <View style={{ height: 1, backgroundColor: '#f7f7f7' }} />
         <Text
@@ -32,7 +50,7 @@ export default class Mine extends Component {
           style={styles.containerSubtwo}
           onPress={() => { navigation.navigate('PersonList', { page: 'buy' }); }}
         >
-            我购买的
+            我租赁的
           <Ionicons
             name="ios-arrow-forward"
             size={18}
@@ -41,7 +59,7 @@ export default class Mine extends Component {
         <View style={{ height: 1, backgroundColor: '#f7f7f7' }} />
         <Text
           style={styles.containerSubtwo}
-          onPress={() => { navigation.navigate('PersonList', { page: 'myRelease' }); }}
+          onPress={() => { navigation.navigate('PersonList', { page: 'release' }); }}
         >
              我发布的
           <Ionicons
@@ -50,6 +68,13 @@ export default class Mine extends Component {
           />
         </Text>
         <View style={{ height: 1, backgroundColor: '#f7f7f7' }} />
+        <View style={styles.btn}>
+          <Button
+            title="退出登录"
+            onPress={() => { navigation.navigate('Login'); }}
+          />
+        </View>
+
       </View>
     );
   }
@@ -82,5 +107,11 @@ const styles = StyleSheet.create({
     lineHeight: 50,
     fontSize: 18,
 
+  },
+  btn: {
+    marginTop: 200,
+    marginLeft: 60,
+    width: 200,
+    backgroundColor: '#EB235C',
   },
 });

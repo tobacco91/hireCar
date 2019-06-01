@@ -1,50 +1,44 @@
 import React, { Component } from 'react';
-import { SearchBar, WhiteSpace } from '@ant-design/react-native';
+
 import {
-   StyleSheet, View,
+  StyleSheet, View, AsyncStorage,
 } from 'react-native';
 import FlatListComponent from '../components/FlatListComponent';
+import { get } from '../utils/request';
+
 
 export default class List extends Component {
   constructor(props) {
     super(props);
     this.state = {
-      searchValue: '',
       data: [],
 		 };
   }
 
   componentDidMount() {
-    this.setState({
-      data: [
-        { key: 'Devin', url: '' },
-        { key: 'Jackson' },
-        { key: 'James' },
-        { key: 'Joel' },
-        { key: 'John' },
-        { key: 'Jillian' },
-        { key: 'Jimmy' },
-        { key: 'Julie5' },
-        { key: 'John4' },
-        { key: 'Jillian3' },
-        { key: 'Jimmy1' },
-        { key: 'Julie2' },
-      ],
-    });
+    const { navigation } = this.props;
+    AsyncStorage.getItem('user')
+      .then((value) => {
+        const user = JSON.parse(value);
+        get(`/user/typeList?type=${navigation.state.params.page}&userId=${user.userId}`)
+          .then((res) => {
+            this.setState({ data: res.data });
+          });
+      });
   }
 
 
-	render() {
+  render() {
 	  return (
-	  <View style={styles.container}>
-	      <FlatListComponent
-	        data={this.state.data}
-    navigation={this.props.navigation}
-  />
-  </View>
+  <View style={styles.container}>
+        <FlatListComponent
+      data={this.state.data}
+      navigation={this.props.navigation}
+    />
+      </View>
 
 	  );
-	}
+  }
 }
 const styles = StyleSheet.create({
   container: {

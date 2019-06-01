@@ -2,10 +2,12 @@
  * @format
  */
 
-import {AppRegistry} from 'react-native';
+import { AppRegistry } from 'react-native';
 // import App from './App';
 import { createAppContainer } from 'react-navigation';
 import AppStackNavigator from './app/navigators/StackNavigator';
-import {name as appName} from './app.json';
+import { name as appName } from './app.json';
+
 const AppStackNavigatorContainer = createAppContainer(AppStackNavigator);
 AppRegistry.registerComponent(appName, () => AppStackNavigatorContainer);
+// GLOBAL.XMLHttpRequest = GLOBAL.originalXMLHttpRequest || GLOBAL.XMLHttpRequest;

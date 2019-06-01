@@ -1,80 +1,95 @@
-import React, {Component} from 'react';
-import {TextInput, StyleSheet,Text, Button, View,PixelRatio,
+import React, { Component } from 'react';
+import {
+  TextInput, StyleSheet, Text, Button, View, PixelRatio,
   TouchableOpacity,
-  Image,} from 'react-native';
+  Image, Alert,
+} from 'react-native';
 import ImagePicker from 'react-native-image-picker';
+import { post } from '../utils/request';
 
 export default class Register extends Component {
   constructor(props) {
     super(props);
     this.state = {
       user: '',
-      password: '', 
+      password: '',
       surePassword: '',
       name: '',
       avatarSource: null,
-     };
+      fileName: '',
+    };
   }
 
-  login = () => {
-    const { navigation } = this.props;
-    navigation.navigate('Home');
+  register = () => {
+    if (this.state.password === this.state.surePassword) {
+      const { navigation } = this.props;
+      const formData = new FormData();
+      const image = { uri: this.state.avatarSource.uri, type: 'multipart/form-data', name: this.state.fileName };
+      formData.append('account', this.state.user);
+      formData.append('password', this.state.password);
+      formData.append('name', this.state.name);
+      formData.append('avatar', image);
+      post('/user/register', formData)
+        .then((res) => {
+          Alert.alert('提示', res.msg);
+          navigation.navigate('Login');
+        });
+    } else {
+      Alert.alert('提示', '两次密码不一致');
+    }
   }
 
   selectPhotoTapped() {
     const options = {
-        title: '选择图片', 
-        cancelButtonTitle: '取消',
-        takePhotoButtonTitle: '拍照', 
-        chooseFromLibraryButtonTitle: '选择照片', 
-        customButtons: [
-            {name: 'fb', title: 'Choose Photo from Facebook'},
-          ],
-        cameraType: 'back',
-        mediaType: 'photo',
-        videoQuality: 'high', 
-        durationLimit: 10, 
-        maxWidth: 300,
-        maxHeight: 300,
-        quality: 0.8, 
-        angle: 0,
-        allowsEditing: false, 
-        noData: false,
-        storageOptions: {
-            skipBackup: true  
-        }
+      title: '选择图片',
+      cancelButtonTitle: '取消',
+      takePhotoButtonTitle: '拍照',
+      chooseFromLibraryButtonTitle: '选择照片',
+      customButtons: [
+        { name: 'fb', title: 'Choose Photo from Facebook' },
+      ],
+      cameraType: 'back',
+      mediaType: 'photo',
+      videoQuality: 'high',
+      durationLimit: 10,
+      maxWidth: 300,
+      maxHeight: 300,
+      quality: 0.8,
+      angle: 0,
+      allowsEditing: false,
+      noData: false,
+      storageOptions: {
+        skipBackup: true,
+      },
     };
 
     ImagePicker.showImagePicker(options, (response) => {
-        console.log('Response = ', response);
+      console.log('Response = ', response);
 
-        if (response.didCancel) {
-            console.log('User cancelled photo picker');
-        }
-        else if (response.error) {
-            console.log('ImagePicker Error: ', response.error);
-        }
-        else if (response.customButton) {
-            console.log('User tapped custom button: ', response.customButton);
-        }
-        else {
-            let source = { uri: response.uri };
-            console.log(source,'source')//uri: "file:///Users/a91/Library/Developer/CoreSimulator/…ocuments/B7AE02C0-C2FC-4F28-8671-CABF76CAFBC4.jpg"
-            // You can also display the image using data:
-            // let source = { uri: 'data:image/jpeg;base64,' + response.data };
+      if (response.didCancel) {
+        console.log('User cancelled photo picker');
+      } else if (response.error) {
+        console.log('ImagePicker Error: ', response.error);
+      } else if (response.customButton) {
+        console.log('User tapped custom button: ', response.customButton);
+      } else {
+        const source = { uri: response.uri };
+        console.log(source, 'source');// uri: "file:///Users/a91/Library/Developer/CoreSimulator/…ocuments/B7AE02C0-C2FC-4F28-8671-CABF76CAFBC4.jpg"
+        // You can also display the image using data:
+        // let source = { uri: 'data:image/jpeg;base64,' + response.data };
 
-            this.setState({
-                avatarSource: source
-            });
-        }
+        this.setState({
+          avatarSource: source,
+          fileName: response.fileName,
+        });
+      }
     });
   }
 
   render() {
-    const { navigation } = this.props;
-    return(
+    return (
       <View style={styles.container}>
-      
+
         <TextInput
           style={styles.subone}
           placeholder="用户名(请使用邮箱)"
@@ -97,19 +112,25 @@ export default class Register extends Component {
           onChangeText={surePassword => this.setState({ surePassword })}
         />
         <TouchableOpacity onPress={this.selectPhotoTapped.bind(this)}>
-          <View style={[styles.avatar, styles.avatarContainer, {marginBottom: 30}]}>
-              { this.state.avatarSource === null ? <Text>上传头像</Text> :
-                  <Image style={styles.avatar} source={this.state.avatarSource} />
-              }
+          <View style={[styles.avatar, styles.avatarContainer, { marginBottom: 30 }]}>
+            { this.state.avatarSource === null ? <Text>上传头像</Text>
+              : (
+                <Image
+                  style={styles.avatar}
+                  source={this.state.avatarSource}
+                />
+              )
+            }
           </View>
         </TouchableOpacity>
-      <View style={styles.register}>
-        <Button title="注册" 
-          onPress={() => {alert('注册成功，请登录');navigation.navigate('Login');}}
-        />
+        <View style={styles.register}>
+          <Button
+            title="注册"
+            onPress={this.register}
+          />
+        </View>
       </View>
-    </View>
-  
+
     );
   }
 }
@@ -128,7 +149,7 @@ const styles = StyleSheet.create({
     backgroundColor: '#F7F7F7',
   },
   register: {
-    marginTop:20,
+    marginTop: 20,
     width: 200,
     backgroundColor: '#F5D33D',
   },
@@ -137,11 +158,11 @@ const styles = StyleSheet.create({
     borderColor: '#9B9B9B',
     borderWidth: 1 / PixelRatio.get(),
     justifyContent: 'center',
-    alignItems: 'center'
+    alignItems: 'center',
   },
   avatar: {
-      width: 100,
-      height: 100
-  }
+    width: 100,
+    height: 100,
+  },
 
 });

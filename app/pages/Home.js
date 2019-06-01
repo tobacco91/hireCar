@@ -1,7 +1,7 @@
 import React, { Component } from 'react';
 import { SearchBar, WhiteSpace } from '@ant-design/react-native';
 import {
-  StyleSheet, Text, View, Button,
+  StyleSheet, Text, View,
 } from 'react-native';
 import FlatListComponent from '../components/FlatListComponent';
 import { get } from '../utils/request';
@@ -25,19 +25,14 @@ export default class Home extends Component {
 	submit = (value) => {
 	  const { navigation } = this.props;
 	  navigation.navigate('List', { str: value, page: 'search' });
-	  // const data = new FormData();
-	  // data.append('str', value);
-	  // get('/car/searchCar', data)
-	  //   .then((res) => {
-	  //     navigation.navigate('List',{});
-	  //   });
+
 	}
 
 	render() {
 	  const { navigation } = this.props;
 	  return (
 	    <View style={styles.container}>
-	      <SearchBar
+    <SearchBar
 	        placeholder="Search"
     cancelText=" "
     onSubmit={this.submit}

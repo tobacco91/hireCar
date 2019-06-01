@@ -1,61 +1,120 @@
 import React, { Component } from 'react';
 
 import {
-  Image, StyleSheet, Text, View, Button, ScrollView,
+  Image, StyleSheet, Text, View, Button, ScrollView, AsyncStorage, Alert,
 } from 'react-native';
+import { TextInput } from 'react-native-gesture-handler';
+import _ from 'lodash';
+import { post, get } from '../utils/request';
+import { getCode } from '../utils/encryption';
 
+
+const CAR_IMAGE_DEFAULT_URL = 'http://192.168.0.103:8000';
 export default class ListItem extends Component {
   constructor(props) {
     super(props);
     this.state = {
-      data: '',
+      data: {},
+      nowPrice: '',
 		 };
   }
 
   componentDidMount() {
-    
+    const { navigation } = this.props;
+    get(`/car/getCar?carId=${navigation.state.params.code}`)
+      .then((res) => {
+        AsyncStorage.getItem('user')
+          .then((value) => {
+            const user = JSON.parse(value);
+            res.data.user = user;
+            this.setState({ data: res.data, nowPrice: res.data.stringPrice });
+          });
+      });
   }
 
  collect = () => {
-  alert('收藏成功');
+   const { navigation } = this.props;
+   AsyncStorage.getItem('user')
+     .then((value) => {
+       const user = JSON.parse(value);
+       post('/car/collectCar', { carId: navigation.state.params.code, userId: user.userId })
+         .then((res) => {
+           Alert.alert('提示', res.msg);
+         });
+     });
  }
 
  buy = () => {
-  alert('购买成功');
+   const { navigation } = this.props;
+   AsyncStorage.getItem('user')
+     .then((value) => {
+       const user = JSON.parse(value);
+       post('/car/hireCar', { carId: navigation.state.params.code, userId: user.userId })
+         .then((res) => {
+           Alert.alert('提示', res.msg);
+         });
+     });
+ }
+
+ check = () => {
+   const code = getCode(this.state.nowPrice);
+   console.log('nowprice', this.state.nowPrice, 'nowcode', code, 'beforecode', this.state.data.code);
+   if (code === this.state.data.code) {
+     Alert.alert('提示', '价格未被篡改');
+   } else {
+     Alert.alert('提示', '价格已被篡改');
+   }
  }
 
  render() {
+   const { data } = this.state;
    return (
      <View style={styles.wrap}>
        <ScrollView>
          <View style={styles.details}>
            <View style={styles.detailsSubone}>
              <Image
-               source={{ uri: 'https://note.youdao.com/yws/api/personal/file/WEB4baf465904166e49f2da2ee8c13bf3d3?method=download&shareKey=1a99d4962e7d6bcf0a337a88a06df171' }}
+               source={{ uri: CAR_IMAGE_DEFAULT_URL + _.get(data, 'user.avatarPath') }}
                style={styles.detailsSuboneAvatar}
              />
-             <Text style={styles.detailsSuboneName}>昵称</Text>
+             <Text style={styles.detailsSuboneName}>{_.get(data, 'user.name')}</Text>
            </View>
-           <Text style={styles.detailsTitle}>本车出租</Text>
-           <Text style={styles.detailsPrice}>价格：$23</Text>
-           <Text style={styles.detailsPrice}>手机号：18875140931</Text>
-           <Text style={styles.detailsPrice}>地址：浙江绍兴柯桥</Text>
+           <Text style={styles.detailsTitle}>{_.get(data, 'title')}</Text>
+           <View style={styles.detailsPrice}>
+             <Text style={{ fontSize: 16 }}>价格：</Text>
+             <TextInput
+               style={styles.detailsPriceInput}
+               onChangeText={(nowPrice) => { this.setState({ nowPrice }); }}
+             >
+               {_.get(data, 'stringPrice')}
+             </TextInput>
+             <View style={styles.detailsPriceButton}>
+               <Button
+                 color="#fff"
+                 title="价格完整性验证"
+                 onPress={this.check}
+               />
+             </View>
+           </View>
+           <Text style={styles.detailsPrice}>
+手机号：
+             {_.get(data, 'phone')}
+           </Text>
+           <Text style={styles.detailsPrice}>
+地址：
+             {_.get(data, 'address')}
+           </Text>
            <Text
              style={styles.detailsPrice}
              numberOfLine={20}
            >
-介绍
+             描述：
+             {_.get(data, 'description')}
            </Text>
            <Image
-             source={{ uri: 'https://note.youdao.com/yws/api/personal/file/WEB4baf465904166e49f2da2ee8c13bf3d3?method=download&shareKey=1a99d4962e7d6bcf0a337a88a06df171' }}
+             source={{ uri: CAR_IMAGE_DEFAULT_URL + _.get(data, 'imagePath') }}
              style={styles.detailsImage}
            />
-           <Image
-             source={{ uri: 'https://note.youdao.com/yws/api/personal/file/WEB4baf465904166e49f2da2ee8c13bf3d3?method=download&shareKey=1a99d4962e7d6bcf0a337a88a06df171' }}
-             style={styles.detailsImage}
-           />
-
-
          </View>
        </ScrollView>
        <View style={styles.action}>
@@ -67,12 +126,11 @@ export default class ListItem extends Component {
          </View>
          <View style={styles.actionBuy}>
            <Button
-             title="购买"
+             title="租赁"
              onPress={this.buy}
            />
          </View>
        </View>
-
      </View>
 
    );
@@ -109,8 +167,20 @@ const styles = StyleSheet.create({
     fontWeight: 'bold',
   },
   detailsPrice: {
+    flexDirection: 'row',
+    alignItems: 'center',
     marginTop: 20,
     fontSize: 16,
+
+  },
+  detailsPriceInput: {
+    backgroundColor: '#f7f7f7',
+    width: 80,
+    height: 40,
+  },
+  detailsPriceButton: {
+    marginLeft: 40,
+    backgroundColor: '#F5D33D',
 
   },
   detailsImage: {
@@ -120,8 +190,7 @@ const styles = StyleSheet.create({
     alignItems: 'center',
   },
   action: {
-    position: 'absolute',
-    bottom: 0,
+    height: 40,
     flexDirection: 'row',
   },
   actionCollect: {

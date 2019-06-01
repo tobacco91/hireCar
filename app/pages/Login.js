@@ -1,6 +1,6 @@
 import React, { Component } from 'react';
 import {
-  TextInput, StyleSheet, Button, View,
+  TextInput, StyleSheet, Button, View, AsyncStorage,
 } from 'react-native';
 import { post } from '../utils/request';
 
@@ -18,11 +18,12 @@ export default class Login extends Component {
     const { navigation } = this.props;
     post('/user/login', { account: this.state.user, password: this.state.password })
       .then((res) => {
+        AsyncStorage.setItem('user', JSON.stringify(res.data));
         navigation.navigate('Home');
       });
-      // .catch((error) => {
-      //   console.log(error, 'erro');
-      // });
+    // .catch((error) => {
+    //   console.log(error, 'erro');
+    // });
   }
 
   render() {

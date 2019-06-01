@@ -11,6 +11,7 @@ export default class FlatListComponent extends Component {
       <FlatList
         style={styles.flatList}
         data={this.props.data}
+        keyExtractor={(item, index) => index.toString()}
         ItemSeparatorComponent={() => (
           <View style={{ height: 1, backgroundColor: '#f8f8f8' }} />
         )}
@@ -19,7 +20,10 @@ export default class FlatListComponent extends Component {
             underlayColor="#f8f8f8"
             onPress={() => { navigation.navigate('ListItem', { code: item.carId }); }}
           >
-            <View style={styles.flatListItem}>
+            <View
+              style={styles.flatListItem}
+              
+            >
               <Text style={styles.flatListItemText}>{item.title}</Text>
               <Image
                 style={styles.flatListItemImage}

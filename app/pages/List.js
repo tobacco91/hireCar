@@ -1,7 +1,7 @@
 import React, { Component } from 'react';
-import { SearchBar, WhiteSpace } from '@ant-design/react-native';
+import { SearchBar } from '@ant-design/react-native';
 import {
-  FlatList, Image, StyleSheet, Text, View, Button,
+  StyleSheet, View,
 } from 'react-native';
 import FlatListComponent from '../components/FlatListComponent';
 import { get } from '../utils/request';
@@ -23,11 +23,9 @@ export default class List extends Component {
   componentDidMount() {
     const { navigation } = this.props;
     if (navigation.state.params.page === 'search') {
-      const data = new FormData();
-      data.append('str', navigation.state.params.str);
-      get('/car/searchCar', data)
+      get(`/car/searchCar?str=${navigation.state.params.str}`)
         .then((res) => {
-          this.setState({ data: res.data });
+          this.setState({ data: res.data, searchValue: navigation.state.params.str });
         });
     } else {
       get('/user/typeList', { type: mapping[navigation.state.params.page], userId: '填写' })
@@ -35,30 +33,10 @@ export default class List extends Component {
           this.setState({ data: res.data });
         });
     }
-
-
-    // this.setState({
-    //   data: [
-    //     { key: 'Devin', url: '' },
-    //     { key: 'Jackson' },
-    //     { key: 'James' },
-    //     { key: 'Joel' },
-    //     { key: 'John' },
-    //     { key: 'Jillian' },
-    //     { key: 'Jimmy' },
-    //     { key: 'Julie5' },
-    //     { key: 'John4' },
-    //     { key: 'Jillian3' },
-    //     { key: 'Jimmy1' },
-    //     { key: 'Julie2' },
-    //   ],
-    // });
   }
 
 	submit = (value) => {
-	  const data = new FormData();
-	  data.append('str', value);
-	  get('/car/searchCar', data)
+	  get(`/car/searchCar?str=${value}`)
 	    .then((res) => {
 	      this.setState({ data: res.data });
 	    });
@@ -67,13 +45,15 @@ export default class List extends Component {
 	render() {
 	  return (
 	    <View style={styles.container}>
-    {
+	      {
 	        this.props.navigation.state.params.page === 'search'
 	          ? (
 	            <SearchBar
+	              value={this.state.searchValue}
 	              placeholder="Search"
 	              cancelText=" "
-	              onSubmit={this.submit}
+    onSubmit={this.submit}
+    onChange={(value) => { this.setState({ searchValue: value }); }}
   />
 	          )
 	          : ''
