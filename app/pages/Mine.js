@@ -109,9 +109,10 @@ const styles = StyleSheet.create({
 
   },
   btn: {
-    marginTop: 200,
+    marginTop: 100,
     marginLeft: 60,
     width: 200,
+    height: 40,
     backgroundColor: '#EB235C',
   },
 });

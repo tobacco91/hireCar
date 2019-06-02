@@ -11,8 +11,8 @@ import AppBottomTabNavigator from './BottomTabNavigator';
 import { createStackNavigator } from 'react-navigation';
 const mapping = {
   collect: '收藏列表',
-  myRelease: '发布列表',
-  buy: '购买列表'
+  release: '发布列表',
+  buy: '租赁列表'
 }
 const stackNavigator = createStackNavigator({
     Login: {

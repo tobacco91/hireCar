@@ -1,7 +1,7 @@
 import React, { Component } from 'react';
 import {
   StyleSheet, Text, View, TextInput, Button, ScrollView, PixelRatio,
-  TouchableOpacity,
+  TouchableOpacity, AsyncStorage,
   Image, Alert,
 } from 'react-native';
 import ImagePicker from 'react-native-image-picker';
@@ -77,10 +77,15 @@ export default class Release extends Component {
     formData.append('description', this.state.description);
     formData.append('price', this.state.price);
     formData.append('image', image);
-    post('/car/addCar', formData)
-      .then((res) => {
-        Alert.alert('提示', res.msg);
-	      navigation.navigate('Home');
+    AsyncStorage.getItem('user')
+      .then((value) => {
+        const user = JSON.parse(value);
+        formData.append('userId', user.userId);
+        post('/car/addCar', formData)
+          .then((res) => {
+            Alert.alert('提示', res.msg);
+	          navigation.navigate('Home');
+          });
       });
   }
 

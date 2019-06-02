@@ -4,7 +4,7 @@ import {
   Alert,
 } from 'react-native';
 
-axios.defaults.baseURL = 'http://9khgne.natappfree.cc/';
+axios.defaults.baseURL = 'http://drmx4e.natappfree.cc/';
 
 const handleReponse = (response) => {
   const res = response.data;

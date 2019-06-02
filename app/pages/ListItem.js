@@ -117,20 +117,28 @@ export default class ListItem extends Component {
            />
          </View>
        </ScrollView>
-       <View style={styles.action}>
-         <View style={styles.actionCollect}>
-           <Button
-             title="收藏"
-             onPress={this.collect}
-           />
-         </View>
-         <View style={styles.actionBuy}>
-           <Button
-             title="租赁"
-             onPress={this.buy}
-           />
-         </View>
-       </View>
+       {
+         data.buyStatus === 0
+           ? (
+             <View style={styles.action}>
+               <View style={styles.actionCollect}>
+                 <Button
+                   title="收藏"
+                   onPress={this.collect}
+                 />
+               </View>
+               <View style={styles.actionBuy}>
+                 <Button
+                   title="租赁"
+                   onPress={this.buy}
+                 />
+               </View>
+             </View>
+           )
+           : (<Text style={styles.bottomTips}>该车已被租赁</Text>)
+       }
+
+
      </View>
 
    );
@@ -201,5 +209,12 @@ const styles = StyleSheet.create({
   actionBuy: {
     flex: 1,
     backgroundColor: '#EB235C',
+  },
+  bottomTips: {
+    textAlign: 'center',
+    height: 30,
+    lineHeight: 30,
+    fontSize: 20,
+    backgroundColor: '#969696',
   },
 });

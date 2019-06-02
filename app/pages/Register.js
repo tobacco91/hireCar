@@ -104,11 +104,13 @@ export default class Register extends Component {
         <TextInput
           style={styles.subone}
           placeholder="密码"
+          secureTextEntry={true}
           onChangeText={password => this.setState({ password })}
         />
         <TextInput
           style={styles.subone}
           placeholder="再次输入密码"
+          secureTextEntry={true}
           onChangeText={surePassword => this.setState({ surePassword })}
         />
         <TouchableOpacity onPress={this.selectPhotoTapped.bind(this)}>

@@ -10,7 +10,6 @@ export default class Home extends Component {
   constructor(props) {
     super(props);
     this.state = {
-      // searchValue: '',
       data: [],
 		 };
   }
@@ -25,7 +24,6 @@ export default class Home extends Component {
 	submit = (value) => {
 	  const { navigation } = this.props;
 	  navigation.navigate('List', { str: value, page: 'search' });
-
 	}
 
 	render() {

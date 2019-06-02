@@ -39,6 +39,7 @@ export default class Login extends Component {
         <TextInput
           style={styles.subone}
           placeholder="密码"
+          secureTextEntry={true}
           onChangeText={password => this.setState({ password })}
         />
 
